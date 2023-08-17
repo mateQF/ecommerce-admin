@@ -1,7 +1,5 @@
 "use client";
 
-import { CellAction } from "./cell-action";
-
 import { ColumnDef } from "@tanstack/react-table";
 
 export type OrderColumn = {
