@@ -130,7 +130,7 @@ export async function PATCH(
 
 export async function DELETE(
   _req: Request,
-  { params }: { params: { storeId: string; productId: string } }
+  { params }: { params: { storeId: string, productId: string } }
 ) {
   try {
     const { userId } = auth();

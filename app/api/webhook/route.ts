@@ -18,10 +18,7 @@ export async function POST(req: Request) {
       process.env.STRIPE_WEBHOOK_SECRET!
     );
   } catch (error: any) {
-    console.log(error);
-    return new NextResponse(`Webhook Error: ${error.message}`, {
-      status: 401,
-    });
+    return new NextResponse(`Webhook Error: ${error.message}`, { status: 400 });
   }
 
   const session = event.data.object as Stripe.Checkout.Session;
@@ -53,14 +50,12 @@ export async function POST(req: Request) {
       },
     });
 
-    const productsIds = order.orderItems.map(
-      (orderItem) => orderItem.productId
-    );
+    const productIds = order.orderItems.map((orderItem) => orderItem.productId);
 
     await prismadb.product.updateMany({
       where: {
         id: {
-          in: [...productsIds],
+          in: [...productIds],
         },
       },
       data: {
@@ -69,7 +64,5 @@ export async function POST(req: Request) {
     });
   }
 
-  return new NextResponse(null, {
-    status: 200,
-  });
+  return new NextResponse(null, { status: 200 });
 }
